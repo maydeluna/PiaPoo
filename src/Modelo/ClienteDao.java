@@ -70,6 +70,8 @@ public class ClienteDao {
         }
         return ListaCl;
     }
+    
+    
     public boolean EliminarCliente(int id){
         String sql= "DELETE FROM clientes WHERE id = ?";
         try{
@@ -91,7 +93,7 @@ public class ClienteDao {
     }
     
 public boolean ModificarCliente(Cliente cl){
-    String sql ="UPDATE clientes SET dni=?, nombre=?, telefono=?, direccion=?, razon=?  WHERE Id=?";
+    String sql ="UPDATE clientes SET dni=?, nombre=?, telefono=?, direccion=?, razon=?  WHERE id=?";
     try{
         ps= con.prepareStatement(sql);
         ps.setInt(1,cl.getDni());
@@ -112,5 +114,26 @@ public boolean ModificarCliente(Cliente cl){
         System.out.println(e.toString());
     }
 }
+}
+
+public Cliente Buscarcliente(int dni){
+    Cliente cl= new Cliente();
+    String sql="SELECT * FROM clientes WHERE dni=?";
+    try {
+        con = cn.getConnection();
+        ps=con.prepareStatement(sql);
+        ps.setInt(1,dni);
+        rs=ps.executeQuery();
+        if (rs.next()) {
+            cl.setNombre(rs.getString("nombre"));
+            cl.setTelefono(rs.getInt("telefono"));
+            cl.setDireccion(rs.getString("direccion"));
+            cl.setRazon(rs.getString("razon"));
+            
+        }
+    } catch(SQLException e){
+        System.out.println(e.toString());
+    }
+    return cl;
 }
 }
